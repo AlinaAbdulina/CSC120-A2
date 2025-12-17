@@ -1,42 +1,50 @@
-from computer import *
+from computer import Computer
 
 class ResaleShop:
 
-    # What attributes will it need?
-    inventory = []
+    # Constructor for a new resale shop with an inventory 
+    def __init__(self):
+        self.inventory = []
 
-    # How will you set up your constructor?
-    # Remember: in python, all constructors have the same name (__init__)
-    def __init__():
-        pass # You'll remove this when you fill out your constructor
+    # Buys a computer and adds it to the inventory
+    def buy(self, computer: Computer):
+        self.inventory.append(computer)
+        return len(self.inventory) - 1
 
-    # What methods will you need?
-    def buy(self):
-    
-    def print_inventory():
-    # If the inventory is not empty
-    if inventory:
-        # For each item
-        for item in inventory:
-            # Print its details
-            print(f'Item ID: {inventory.index(item)} : {item}')
-    else:
-        print("No inventory to display.")
+    # Sells a computer and removes it from the inventory
+    def sell(self, item_id: int):
+        if 0 <= item_id < len(self.inventory) and self.inventory[item_id] is not None:
+            self.inventory[item_id] = None
+            print("Item", item_id, "sold!")
+        else: 
+            print("Item", item_id, "not found. Please select another item to sell.")
 
-    def sell(item_id: int):
-    if inventory[item_id] is not None:
-        inventory.pop(item_id)
-        print("Item", item_id, "sold!")
-    else: 
-        print("Item", item_id, "not found. Please select another item to sell.")
-    
-    def update_price(item_id: int, new_price: int):
-    if inventory[item_id] is not None:
-        inventory[item_id]["price"] = new_price
-    else:
-        print("Item", item_id, "not found. Cannot update price.")
+    # Prints the current inventory of the resale shop
+    def print_inventory(self):
+        if self.inventory:
+            for i, item in enumerate(self.inventory):
+                if item is not None:
+                    print(f'Item ID: {i} : {item}')
+        else:
+            print("No inventory to display.")
 
-    def buy(computer: Dict):
-    inventory.append(computer)
-    return inventory.index(computer)
-        
+    # Refurbishes a computer in the inventory
+    def refurbish(self, item_id: int, new_os=None):
+        if 0 <= item_id < len(self.inventory) and self.inventory[item_id] is not None:
+            computer = self.inventory[item_id]
+            
+            # Update price based on year made
+            if computer.year_made < 2000:
+                computer.update_price(0)
+            elif computer.year_made < 2012:
+                computer.update_price(250)
+            elif computer.year_made < 2018:
+                computer.update_price(550)
+            else:
+                computer.update_price(1000)
+            
+            # Update OS if provided
+            if new_os is not None:
+                computer.update_os(new_os)
+        else:
+            print("Item", item_id, "not found. Please select another item to refurbish.")
